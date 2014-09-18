@@ -19,7 +19,7 @@
 
 	<div class="row">
 		<c:forEach items="${game.getBriefcases()}" var="bc">
-			<div class="col-md-3"><h4>${bc.toString()}</h4></div>
+			<div class="col-md-3"><h4>${bc}</h4></div>
 		</c:forEach>
 	</div>
 </body>
