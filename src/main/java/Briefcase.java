@@ -1,3 +1,6 @@
+package game;
+import java.text.DecimalFormat;
+
 public class Briefcase {
 	private double value;
 	private boolean open;
@@ -21,5 +24,10 @@ public class Briefcase {
 
 	public void setOpen() {
 		open = true;
+	}
+
+	public String toString() {
+		DecimalFormat df = new DecimalFormat("$0.00");
+		return df.format(value);
 	}
 }
