@@ -1,47 +1,94 @@
 package game;
+import java.text.DecimalFormat;
 import java.util.*;
 
 public class DealOrNoDeal {
 	private static final int numBriefcases = 12;
 	private final double[] briefcaseValues = new double[] { 0.5, 1, 10, 100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000 };
-	private LinkedHashSet briefcaseSet;
-	private Briefcase[] briefcases = new Briefcase[numBriefcases];
+	private Hashtable<Integer, Briefcase> briefcases = new Hashtable<Integer, Briefcase>(numBriefcases);
+	private int roundNum = 1;
+	private final int totalRounds = 18;
+	private int numRevealed = 0;
+	private boolean[] offerRounds = new boolean[totalRounds];
 
 	public DealOrNoDeal() { 
-		briefcaseSet = new LinkedHashSet();
 		initBriefcases();
+
+		offerRounds[5] = true;
+		offerRounds[9] = true;
+		offerRounds[12] = true;
+		offerRounds[14] = true;
+		offerRounds[16] = true;
 	}
 
 	private void initBriefcases() {
+
+		//put values into linked list
+		LinkedList<Double> values = new LinkedList<Double>();
+		for (int i = 0; i < briefcaseValues.length; i++) {
+			values.add(briefcaseValues[i]);
+		}
+
 		//init random generator
 		Random r = new Random(new Date().getTime());
+		while (values.size() > 0) {
+			//get a random index value
+			int index = r.nextInt(values.size());
 
-		//random range value
-		int max = numBriefcases - 1;
+			//get it from the list
+			//then remove it
+			double value = values.get(index);
+			values.remove(index);
 
-		/*
-			Loop until we have inserted
-			12 unique values into a set
-		*/
-		do {
-			int index = r.nextInt(max + 1);
-			briefcaseSet.add(briefcaseValues[index]);
-		} while (briefcaseSet.size() < numBriefcases);
-
-		/*
-			Then iterate that set and insert 
-			into an array
-		*/
-		Iterator iterator = briefcaseSet.iterator();
-		for (int i = 0; i < briefcaseSet.size(); i++) {
+			//create our briefcase
+			//then insert into hashtable
 			Briefcase b = new Briefcase();
-			b.setValue((double)iterator.next());
+			b.setValue(value);
 
-			briefcases[i] = b;
+			briefcases.put(b.hashCode(), b);
 		}
 	}
 
-	public Briefcase[] getBriefcases() {
+	public Hashtable<Integer, Briefcase> getBriefcases() {
 		return briefcases;
+	}
+
+	public int getRoundNumber() {
+		return roundNum;
+	}
+
+	public boolean isOfferRound() {
+		return offerRounds[roundNum];
+	}
+
+	public double getOfferAmount() {
+		//get total amount remaining
+		double total = 0;
+		for (Enumeration<Integer> keys = briefcases.keys(); keys.hasMoreElements();) {
+			Briefcase b = briefcases.get(keys.nextElement());
+			if (!b.isOpen()) total += b.getValue();
+		}
+
+		double offerAmount = total / (numBriefcases - numRevealed);
+		return offerAmount;
+	}
+
+	public boolean open(int id) {
+		if (offerRounds[roundNum] || briefcases.get(id).isOpen()) return false;
+
+		briefcases.get(id).setOpen();
+		roundNum++;
+		numRevealed++;
+
+		return true;
+	}
+
+	public void acceptOffer(boolean deal) {
+		if (!deal) {
+			roundNum++;
+		}
+		else {
+			//TODO: end game
+		}
 	}
 }
