@@ -15,7 +15,7 @@ public class TestDealOrNoDeal {
 	public void testBriefcases() {
 		DealOrNoDeal game = new DealOrNoDeal();
 
-		Hashtable<Integer, Briefcase> bht = game.getBriefcases();
+		Dictionary<Integer, Briefcase> bht = game.getBriefcases();
 		for (Enumeration<Integer> i = bht.keys(); i.hasMoreElements(); ) {
 			Briefcase b = bht.get(i.nextElement());
 			assertTrue(b.getValue() > 0);
@@ -63,10 +63,7 @@ public class TestDealOrNoDeal {
 
 		assertTrue(game.open(ids.pop())); //15
 
-		assertTrue(game.isOfferRound()); //16
-		game.acceptOffer(false);
-
-		assertTrue(game.open(ids.pop())); //17
+		assertTrue(game.isGameOver()); //16
 	}
 
 	@Test
@@ -88,5 +85,27 @@ public class TestDealOrNoDeal {
 		assertTrue(game.isOfferRound());
 
 		assertTrue(game.getOfferAmount() > 0);
+	}
+
+	@Test
+	public void testOpenBriefcaseOnOfferRound() {
+		DealOrNoDeal game = new DealOrNoDeal();
+
+		//create a stack of ids and push ids onto stack
+		Stack<Integer> ids = new Stack<Integer>();
+		for (Enumeration<Integer> keys = game.getBriefcases().keys(); keys.hasMoreElements();) {
+			ids.push(keys.nextElement());
+		}
+
+		assertTrue(game.open(ids.pop())); //1
+		assertTrue(game.open(ids.pop())); //2
+		assertTrue(game.open(ids.pop())); //3
+		assertTrue(game.open(ids.pop())); //4
+
+		assertTrue(game.getRoundNumber() == 5);
+		assertTrue(game.isOfferRound());
+
+		assertFalse(game.open(ids.pop()));
+		assertTrue(game.getRoundNumber() == 5);
 	}
 }

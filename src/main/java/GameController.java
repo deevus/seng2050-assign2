@@ -12,10 +12,7 @@ public class GameController extends HttpServlet {
     throws IOException, ServletException
   {
     HttpSession session = req.getSession();
-    if (session.getAttribute("game") == null) {
-      DealOrNoDeal game = new DealOrNoDeal();
-      session.setAttribute("game", game);
-    }
+    if (session.getAttribute("game") == null) doNewGame(session);
 
     doIndexView(req, res);
   }
@@ -25,21 +22,48 @@ public class GameController extends HttpServlet {
   {
     HttpSession session = req.getSession();
 
-    //get game board
-    DealOrNoDeal game = (DealOrNoDeal)session.getAttribute("game");
-    if (game.isOfferRound()) {
+    //game is over - player has requested new game
+    if (req.getParameterValues("newgame") != null || session.getAttribute("game") == null) {
 
-      boolean deal = new Boolean(req.getParameter("deal"));
-      game.acceptOffer(deal);
+      doNewGame(session);
 
-    } 
+    }
     else {
 
-      //get id
-      int id = Integer.parseInt(req.getParameter("id"));
+      //get game board
+      DealOrNoDeal game = (DealOrNoDeal)session.getAttribute("game");
 
-      //open briefcase
-      game.open(id);
+      //if its an offer round
+      if (game.isOfferRound() && (req.getParameterValues("id") == null)) {
+
+        try {
+          boolean deal = new Boolean(req.getParameter("deal"));
+          game.acceptOffer(deal);
+        }
+        catch (Exception e) {
+          //we don't need to do anything here
+          //game board will not be changed
+        }
+
+      } 
+      //normal round
+      else {
+
+        try {
+
+          //get id
+          int id = Integer.parseInt(req.getParameter("id"));
+
+          //open briefcase
+          game.open(id);
+
+        }
+        catch (Exception e) {
+          //we don't need to do anything here
+          //game board will not be changed
+        }
+
+      }
 
     }
 
@@ -49,7 +73,13 @@ public class GameController extends HttpServlet {
   private void doIndexView(HttpServletRequest req, HttpServletResponse res) 
     throws IOException, ServletException
   {
+    req.setAttribute("title", "Deal or No Deal");
     RequestDispatcher view = req.getRequestDispatcher("index.jsp");
     view.forward(req, res);
+  }
+
+  private void doNewGame(HttpSession session) {
+    DealOrNoDeal game = new DealOrNoDeal();
+    session.setAttribute("game", game);
   }
 }
