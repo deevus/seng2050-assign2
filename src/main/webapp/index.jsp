@@ -26,7 +26,12 @@
 							</button>
 						</c:when>
 						<c:otherwise>
-							<button type="submit" name="id" value="${bc.key}" class="btn btn-default">?</button>
+							<c:if test="${game.offerRound}">
+								<button type="submit" name="id" value="${bc.key}" class="btn btn-default" disabled>?</button>
+							</c:if>
+							<c:if test="${!game.offerRound}">
+								<button type="submit" name="id" value="${bc.key}" class="btn btn-default">?</button>
+							</c:if>
 						</c:otherwise>
 					</c:choose>
 				</div>
