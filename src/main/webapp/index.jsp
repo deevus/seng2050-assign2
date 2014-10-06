@@ -51,7 +51,7 @@
 				</c:when>
 				<c:otherwise>
 					<div class="alert alert-warning" role="alert">
-						<p>Please choose a closed briefcase to open. </p>
+						<p>Please choose a closed briefcase to open. You must open ${game.casesToOpenTillOffer} more case${game.casesToOpenTillOffer == 1 ? "" : "s"}.</p>
 					</div>
 				</c:otherwise>
 			</c:choose>

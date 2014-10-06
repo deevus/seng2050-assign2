@@ -56,6 +56,7 @@ Undergraduate
 URL
 ---
 
-http://localhost:8080/c3185790_assignment2/
+http://localhost:8080/c3185790_assignment2/ 
+For some reason I couldn't get the game to work without the ending /
 
 [![Build Status](https://travis-ci.org/deevus/seng2050-assign2.svg)](https://travis-ci.org/deevus/seng2050-assign2)

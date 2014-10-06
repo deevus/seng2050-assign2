@@ -76,6 +76,28 @@ public class DealOrNoDeal {
 		return briefcases;
 	}
 
+	public int getCasesToOpenTillOffer() {
+		int count = 0;
+		int round = roundNum;
+
+		//increment count until we reach offer round
+		try {
+
+			while (!offerRounds[round]) {
+
+				count++;
+				round++;
+
+			}
+
+		}
+		catch (IndexOutOfBoundsException e) {
+			count = 1;
+		}
+
+		return count;
+	}
+
 	/**
 	 * Returns the round number
 	 */
