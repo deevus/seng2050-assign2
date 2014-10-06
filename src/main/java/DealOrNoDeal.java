@@ -1,3 +1,12 @@
+/*
+
+	Simon Hartcher
+	C3185790
+
+	SENG2050 Assignment 2
+
+ */
+
 package game;
 import java.text.DecimalFormat;
 import java.util.*;
@@ -17,6 +26,9 @@ public class DealOrNoDeal {
 	private boolean gameOver = false;
 	private double winAmount;
 
+	/**
+	 * Create a new Deal Or No Deal game
+	 */
 	public DealOrNoDeal() { 
 		initBriefcases();
 
@@ -26,6 +38,9 @@ public class DealOrNoDeal {
 		offerRounds[finalOffer] = true;
 	}
 
+	/**
+	 * Randomises the briefcases
+	 */
 	private void initBriefcases() {
 
 		//put values into linked list
@@ -54,30 +69,48 @@ public class DealOrNoDeal {
 		}
 	}
 
+	/**
+	 * Returns the list of briefcases cases
+	 */
 	public Dictionary<Integer, Briefcase> getBriefcases() {
 		return briefcases;
 	}
 
+	/**
+	 * Returns the round number
+	 */
 	public int getRoundNumber() {
 		return roundNum;
 	}
 
+	/**
+	 * Returns whether round is an offer round
+	 */
 	public boolean isOfferRound() {
 		return offerRounds[roundNum];
 	}
 
+	/**
+	 * Returns whether offer round is the final offer
+	 */
 	public boolean isFinalOffer() {
 		return roundNum == finalOffer;
 	}
 
+	/**
+	 * Returns the bank offer amount
+	 */
 	public double getOfferAmount() {
 		//get total amount remaining
 		double total = 0;
+
+		//add up all the remaining unopened cases
 		for (Enumeration<Integer> keys = briefcases.keys(); keys.hasMoreElements();) {
 			Briefcase b = briefcases.get(keys.nextElement());
 			if (!b.isOpen()) total += b.getValue();
 		}
 
+		//calculate the value
 		double offerAmount = total / (numBriefcases - numRevealed);
 		return offerAmount;
 	}
@@ -120,20 +153,34 @@ public class DealOrNoDeal {
 		return true;
 	}
 
+	/**
+	 * Accept or deny a bank offer
+	 */
 	public void acceptOffer(boolean deal) {
+		//no deal
 		if (!deal) {
 			roundNum++;
 		}
+		//deal
 		else {
+			//set the win amount
 			winAmount = this.getOfferAmount();
+
+			//game is now over
 			gameOver = true;
 		}
 	}
 
+	/**
+	 * Returns whether the game is finished
+	 */
 	public boolean isGameOver() {
 		return gameOver;
 	}
 
+	/**
+	 * Returns a double value of the won amount
+	 */
 	public double getWinnings() {
 		return winAmount;
 	}
