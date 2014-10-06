@@ -10,6 +10,7 @@ prep:
 	@- cp -R src/main/webapp/* $(TEMP)
 	@- mkdir -p $(TEMP)/WEB-INF/classes/game
 	@- cp -R src/main/java/* $(TEMP)/WEB-INF/classes/game
+	@- cp README.md AssignmentCoverSheet.pdf $(TEMP)
 
 dist: prep
 	@- cd $(DIST_DIR)/temp && zip ../$(OUTPUT_FILE) * -r
