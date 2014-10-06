@@ -4,8 +4,8 @@
 <html>
 <head>
 	<title>${title}</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.min.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap-theme.min.css">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/site.css">
 </head>
 <body class="container">
