@@ -26,3 +26,13 @@ buildscript {
         classpath 'org.gradle.api.plugins:gradle-tomcat-plugin:1.2.4'
     }
 }
+
+task copyDeps(type:Copy) {
+    from configurations.runtime
+    into 'build/distributions/temp/WEB-INF/lib'
+}
+
+task dist(type:Exec, dependsOn: copyDeps) {
+    workingDir '.'
+    commandLine 'make', 'dist'
+}
